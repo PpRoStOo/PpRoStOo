@@ -1,0 +1,49 @@
+local player = game.Players.LocalPlayer
+local char = player.Character
+
+local function quest()
+for i,v in pairs(game:GetService("ReplicatedStorage").Quests:GetChildren()) do
+if v.Value:find(_G.Mob) then
+return game:GetService("ReplicatedStorage").RemoteEvents.ChangeQuestRemote:FireServer(game:GetService("ReplicatedStorage").Quests[v.Name])
+end
+end
+end
+
+local function check()
+for i,v in pairs(_G.Races) do
+if game.Players.LocalPlayer.PlayerValues.Race.Value == tostring(v) then return true
+end
+end
+return false
+end
+
+spawn(function()
+game:GetService('RunService').Stepped:connect(function()
+setsimulationradius(math.huge,math.huge)
+workspace.FallenPartsDestroyHeight = math.huge-math.huge
+pcall(function()
+game:GetService("Players").LocalPlayer.PlayerGui.StatusGui.Enabled = false
+game:GetService("Workspace").LocalPlayer.Character.Head.Overhead:Remove()
+end)
+end)
+end)
+
+spawn(function()
+while game:GetService("RunService").Heartbeat:wait() do
+if shared.Enabled then
+pcall(function()
+for i,v in pairs(game:GetService("Workspace").Live[_G.Mob]:GetChildren()) do
+if char.Humanoid.Health > 0 and v.Humanoid.Health > 0 and v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") then
+char.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame
+if char:FindFirstChild(tostring(game:GetService("Players").LocalPlayer.PlayerValues.Ability.Value)) then
+game:GetService("ReplicatedStorage").RemoteEvents.BladeCombatRemote:FireServer(true)
+end
+v.Humanoid.HealthChanged:Connect(function()
+v.Humanoid.Health = 0
+end)
+end
+end
+end)
+end
+end
+end)
