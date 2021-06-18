@@ -19,7 +19,7 @@ end
 
 spawn(function()
 game:GetService('RunService').Stepped:connect(function()
-setsimulationradius(math.huge,math.huge)
+setsimulationradius(math.huge,math.huge)https://github.com/PpRoStOo/PpRoStOo/blob/main/gamegre
 workspace.FallenPartsDestroyHeight = math.huge-math.huge
 pcall(function()
 game:GetService("Players").LocalPlayer.PlayerGui.StatusGui.Enabled = false
@@ -46,4 +46,28 @@ end
 end)
 end
 end
+end)
+
+spawn(function()
+    while wait() do
+        if shared.Enabled then
+            for i,v in pairs(player.Backpack:GetChildren()) do
+                if v:FindFirstChild("Combat Script") then
+                    player.Backpack[game:GetService("Players").LocalPlayer.PlayerValues.Ability.Value].Parent = game.Players.LocalPlayer.Character
+                end
+            end
+    end
+    end
+end)
+
+spawn(function()
+    while wait() do
+        if shared.Enabled then
+            if not player.PlayerGui:WaitForChild("Menu"):WaitForChild("QuestFrame").Visible then
+                pcall(function()
+                    quest()
+                end)
+            end
+        end
+    end
 end)
